@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import './App.css'
+import Result from './Result';
+import KeyPad from './KeyPad';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+
+  state = {
+    currResult: ""
+  }
+
+  calculateHandler = () => {
+    let calculateResult = "";
+    calculateResult = this.state.currResult;
+    let stringAns = calculateResult.toString()
+    this.setState({
+      currResult: eval(stringAns)
+    })
+  }
+
+  resetHandler = () =>{
+    this.setState({
+      currResult:""
+    })
+  }
+
+  onKeyPadClickHandler = (keypad) => {
+    if (keypad === "=") {
+      this.calculateHandler();
+    } else if(keypad === "c"){
+      this.resetHandler();
+    } 
+    else {
+      this.setState({
+        currResult: this.state.currResult + keypad
+      })
+    }
+
+  }
+
+  render = () => {
+    return (
+      <div>
+        <Result currResult={this.state.currResult} />
+        <KeyPad onKeyPadClickHandler={this.onKeyPadClickHandler} />
+      </div>
+    )
+  }
 }
 
 export default App;
